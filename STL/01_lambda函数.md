@@ -58,8 +58,6 @@ auto f1 = [a, &b]() {
 f1();  // b 变为 30
 ```
 
-
-
 ---
 
 # 3.返回类型与类型推导
@@ -77,7 +75,36 @@ auto add = [](int x, int y) -> int {
 现代写法：
 ```cpp
 auto add = [](int x, int y) {   // 可以省略 -> int
-    return x + y;               // 多条 return 也行，只要类型一致
+    return x + y;
+};
+```
+
+有**多条 `return` 语句**也可以使用 `auto`，但 **所有 `return` 表达式必须能推导出同一个类型**，否则编译器无法决定 lambda 的返回类型，就会报错。
+
+示例 1：合法（两条 `return` 都是 `int`）
+
+```cpp
+auto f = [](int x) {
+    if (x > 0) return 1;   // int
+    return 0;              // int   —— 类型一致
+};
+```
+
+示例 2：非法（返回类型不一致）
+
+```cpp
+auto f = [](int x) {
+    if (x > 0) return 1;   // int
+    return 3.14;           // double —— 编译错误
+};
+```
+
+示例三：显式指定返回类型（正确）
+
+```cpp
+auto f = [](int x) -> double {
+    if (x > 0) return 1;   // 1 会隐式转成 double
+    return 3.14;
 };
 ```
 
@@ -94,6 +121,7 @@ auto lambda = [](int x) { return x * 2; };
 ```
 
 或者：
+
 ```cpp
 // std::function< 返回类型(参数1类型, 参数2类型, ...) >
 std::function<int(int)> lambda =  [](int x) { return x * 2; };
