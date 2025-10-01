@@ -127,7 +127,8 @@ auto lambda = [](int x) { return x * 2; };
 std::function<int(int)> lambda =  [](int x) { return x * 2; };
 ```
 
-如果要 **递归** 调用 lambda 函数，就不能用 `auto` 了，得用 `std::function` 显示声明。因为**当用 `auto` 声明变量时，在整条声明语句结束之前，这个变量名还不能被当成一个完整类型来使用**。
+> 如果要 **递归** 调用 lambda 函数，就不能用 `auto` 了，得用 `std::function` 显示声明。因为**当用 `auto` 声明变量时，在整条声明语句结束之前，这个变量名还不能被当成一个完整类型来使用**。
+> C++ 的 lambda 默认不能捕获自身，在递归调用 lambda 函数时，还需要通过捕获列表 `[&]` 显示捕获自身变量，
 
 ---
 
